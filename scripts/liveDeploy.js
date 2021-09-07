@@ -7,6 +7,10 @@ async function main() {
 
 	const MyNFT = await ethers.getContractFactory("NFTContract")
   
+	const deploymentData = MyNFT.interface.encodeDeploy([PASSED_URI, TOKEN_NAME, TOKEN_SYMBOL, OPENSEA_PROXY_ADDRESS]);
+	const estimatedGas = await ethers.provider.estimateGas({ data: deploymentData });
+	console.log("Estimated Gas: " + estimatedGas.toNumber());
+
 	// Start deployment, returning a promise that resolves to a contract object
 	const myNFT = await MyNFT.deploy(PASSED_URI, TOKEN_NAME, TOKEN_SYMBOL, OPENSEA_PROXY_ADDRESS)
 	console.log("Contract deployed to address:", myNFT.address)
