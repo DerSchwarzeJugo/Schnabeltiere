@@ -17,6 +17,7 @@ describe("NFTContract", function () {
 
     expect(await myNFT.baseTokenURI()).to.equal(PASSED_URI);
 
+	// payable function, must be funded
 	let overrides = {
 		// To convert Ether to Wei:
 		value: ethers.utils.parseEther("0.075")     // ether in this case MUST be a string
