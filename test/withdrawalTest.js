@@ -1,15 +1,11 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
+const { PASSED_URI, TOKEN_NAME, TOKEN_SYMBOL, OPENSEA_PROXY_ADDRESS } = require("./testArguments.js")
 
 describe("NFTContract", function () {
   it("Should withdraw max amount to deployer wallet", async function () {
 	//   getSigners() returns list of accounts from connected chain
     const [deployer, addr1] = await ethers.getSigners();
-	// %20 = " ", %23 = "#"
-	const PASSED_URI = "https://nft.derschwarzejugo.com/schnabeltiere/metadata/Fat%20Plat%20%23";
-	const TOKEN_NAME = "SchnabelTierTest";
-	const TOKEN_SYMBOL = "FTPT";
-	const OPENSEA_PROXY_ADDRESS = "0x58807baD0B376efc12F5AD86aAc70E78ed67deaE";
 
 	console.log("Deploying contracts with the account:", deployer.address);
 
@@ -41,4 +37,3 @@ describe("NFTContract", function () {
 	
   });
 });
-
