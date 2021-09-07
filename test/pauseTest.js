@@ -3,7 +3,7 @@ const { ethers } = require("hardhat");
 const { PASSED_URI, TOKEN_NAME, TOKEN_SYMBOL, OPENSEA_PROXY_ADDRESS } = require("./testConstants.js")
 
 describe("NFTContract", function () {
-  it("Should mint 3 tokens to adress #2", async function () {
+  it("Should pause Contract", async function () {
 	//   getSigners() returns list of accounts from connected chain
     const [deployer, addr1] = await ethers.getSigners();
 
@@ -14,17 +14,8 @@ describe("NFTContract", function () {
 
     expect(await myNFT.baseTokenURI()).to.equal(PASSED_URI);
 
-	let overrides = {
-		// To convert Ether to Wei:
-		value: ethers.utils.parseEther("0.075")     // ether in this case MUST be a string
-	}
-	// connect to wallet addr1 and mint 3 tokens to own adress
-	// mint takes two arguments, pass overrides as third param
-	await myNFT.connect(addr1).mint(addr1.address, 3, overrides);
-
-	const balanceOfAddr1 = await myNFT.balanceOf(addr1.address);
-	expect(balanceOfAddr1).to.equal(3);
-
+	await myNFT.setPause(true);
+	expect(await myNFT.paused()).to.be.true;
 	
   });
 });

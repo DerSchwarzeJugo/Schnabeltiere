@@ -96,7 +96,7 @@ contract NFTContract is ERC721Tradable {
 		cost = _newCost;
 	}
 
-	function setmaxMintAmount(uint256 _newmaxMintAmount) public onlyOwner() {
+	function setMaxMintAmount(uint256 _newmaxMintAmount) public onlyOwner() {
 		maxMintAmount = _newmaxMintAmount;
 	}
 
@@ -108,7 +108,7 @@ contract NFTContract is ERC721Tradable {
 		baseExtension = _newBaseExtension;
 	}
 
-	function pause(bool _state) public onlyOwner {
+	function setPause(bool _state) public onlyOwner {
 		paused = _state;
 	}
 	

@@ -1,19 +1,16 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
-const { PASSED_URI, TOKEN_NAME, TOKEN_SYMBOL, OPENSEA_PROXY_ADDRESS } = require("./testArguments.js")
+const { PASSED_URI, TOKEN_NAME, TOKEN_SYMBOL, OPENSEA_PROXY_ADDRESS } = require("./testConstants.js")
 
 describe("NFTContract", function () {
   it("Should withdraw max amount to deployer wallet", async function () {
 	//   getSigners() returns list of accounts from connected chain
     const [deployer, addr1] = await ethers.getSigners();
 
-	console.log("Deploying contracts with the account:", deployer.address);
-
 	const MyNFT = await ethers.getContractFactory("NFTContract");
     // Start deployment, returning a promise that resolves to a contract object
 	const myNFT = await MyNFT.deploy(PASSED_URI, TOKEN_NAME, TOKEN_SYMBOL, OPENSEA_PROXY_ADDRESS);
     await myNFT.deployed();
-	console.log("Contract deployed to address:", myNFT.address);
 
     expect(await myNFT.baseTokenURI()).to.equal(PASSED_URI);
 
@@ -29,9 +26,6 @@ describe("NFTContract", function () {
 	const prevBalance = await deployer.getBalance();
 	await myNFT.withdraw();
 	const postBalance = await deployer.getBalance();
-
-	// format BigNumber the easy way for printing out
-	console.log(ethers.utils.formatEther(prevBalance), ethers.utils.formatEther(postBalance));
 
 	// lt = lowerThan, working with BigNumber Type here
 	expect(prevBalance.lt(postBalance)).to.be.true;

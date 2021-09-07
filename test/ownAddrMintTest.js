@@ -1,19 +1,16 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
-const { PASSED_URI, TOKEN_NAME, TOKEN_SYMBOL, OPENSEA_PROXY_ADDRESS } = require("./testArguments.js")
+const { PASSED_URI, TOKEN_NAME, TOKEN_SYMBOL, OPENSEA_PROXY_ADDRESS } = require("./testConstants.js")
 
 describe("NFTContract", function () {
   it("Should mint 3 tokens to adress of Owner", async function () {
 	//   getSigners() returns list of accounts from connected chain
     const [deployer] = await ethers.getSigners();
 
-	console.log("Deploying contracts with the account:", deployer.address);
-
 	const MyNFT = await ethers.getContractFactory("NFTContract");
     // Start deployment, returning a promise that resolves to a contract object
 	const myNFT = await MyNFT.deploy(PASSED_URI, TOKEN_NAME, TOKEN_SYMBOL, OPENSEA_PROXY_ADDRESS);
     await myNFT.deployed();
-	console.log("Contract deployed to address:", myNFT.address);
 
     expect(await myNFT.baseTokenURI()).to.equal(PASSED_URI);
 
