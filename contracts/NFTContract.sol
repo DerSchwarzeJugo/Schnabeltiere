@@ -14,6 +14,7 @@ contract NFTContract is ERC721Tradable {
 	uint256 public maxMintAmount = 20;
 	bool public paused = false;	
 	mapping(address => bool) public whitelisted;
+	mapping(address => uint) public charityReceived;
 
 	constructor (
 		string memory _initBaseURI,
@@ -26,6 +27,23 @@ contract NFTContract is ERC721Tradable {
 	}
 
 
+	// fallback function if funds gets sent to the contract
+	receive() external payable {
+        receiveCharity();
+    }
+
+	// this function enables payments to the smart contract (feeling lucky)
+	function receiveCharity() public payable {
+		address owner = owner();
+        assert(charityReceived[owner] + msg.value >= charityReceived[owner]);
+        charityReceived[owner] += msg.value;
+    }
+
+	// allows withdrawal of the freely sent amounts
+	function withdrawCharity() public payable onlyOwner {
+		require(payable(_msgSender()).send(charityReceived[_msgSender()]));
+        charityReceived[_msgSender()] = 0;
+    } 
 
 	// internal, overriding default function of erc721 contract
 	function _baseURI() internal view virtual override returns (string memory) {
