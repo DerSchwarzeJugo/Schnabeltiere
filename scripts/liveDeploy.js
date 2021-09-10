@@ -1,4 +1,4 @@
-const { PASSED_URI, TOKEN_NAME, TOKEN_SYMBOL, OPENSEA_PROXY_ADDRESS } = require("./liveContstants.js");
+const { PASSED_URI, TOKEN_NAME, TOKEN_SYMBOL, OPENSEA_PROXY_ADDRESS } = require("./liveConstants.js");
 
 async function main() {
 	const [deployer] = await ethers.getSigners();
