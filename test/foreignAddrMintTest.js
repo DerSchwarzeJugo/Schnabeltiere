@@ -13,17 +13,18 @@ describe("NFTContract", function () {
     await myNFT.deployed();
 
     expect(await myNFT.baseTokenURI()).to.equal(PASSED_URI);
-
+	const cost = ethers.utils.formatEther(await myNFT.cost());
+	const amount = 3
 	let overrides = {
 		// To convert Ether to Wei:
-		value: ethers.utils.parseEther("0.075")     // ether in this case MUST be a string
+		value: ethers.utils.parseEther(String(amount * cost))     // ether in this case MUST be a string
 	}
 	// connect to wallet addr1 and mint 3 tokens to own adress
 	// mint takes two arguments, pass overrides as third param
-	await myNFT.connect(addr1).mint(addr1.address, 3, overrides);
+	await myNFT.connect(addr1).mint(addr1.address, amount, overrides);
 
 	const balanceOfAddr1 = await myNFT.balanceOf(addr1.address);
-	expect(balanceOfAddr1).to.equal(3);
+	expect(balanceOfAddr1).to.equal(amount);
 
 	
   });

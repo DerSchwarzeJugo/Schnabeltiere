@@ -9,7 +9,8 @@ contract NFTContract is ERC721Tradable {
 
 	string public baseURI;
 	string public baseExtension = ".json";
-	uint256 public cost = 0.025 ether;
+	// this is 80 Matic in our case
+	uint256 public cost = 80 ether;
 	uint256 public maxSupply = 4096;
 	uint256 public maxMintAmount = 20;
 	bool public paused = false;	
