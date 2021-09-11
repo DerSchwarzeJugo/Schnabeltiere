@@ -13,7 +13,10 @@ describe("NFTContract", function () {
     await myNFT.deployed();
 
     expect(await myNFT.baseTokenURI()).to.equal(PASSED_URI);
-
+	// first get balance for reference
+	const prevBalance = await myNFT.charityReceived(deployer.address);
+	const prevOwnerBalance = await deployer.getBalance()
+	
 	// payable function, must be funded
 	let overrides = {
 		// To convert Ether to Wei:
@@ -22,18 +25,18 @@ describe("NFTContract", function () {
 		value: ethers.utils.parseEther("0.05")     // ether in this case MUST be a string
 	}
 	await addr1.sendTransaction(overrides)
-
+	
 	// now there should be 0.05 eth in smartcontract which we will try to withdraw
-	// first get balance for reference
-	const prevBalance = await myNFT.charityReceived(deployer.address);
 	// check if amount was received from the fallback to charity function
-	expect(ethers.utils.formatEther(prevBalance)).to.equal("0.05")
-
-	await myNFT.withdrawCharity();
+	
+	await myNFT.withdraw();
 	const postBalance = await myNFT.charityReceived(deployer.address);
+	const postOwnerBalance = await deployer.getBalance()
+	expect(ethers.utils.formatEther(postBalance)).to.equal("0.05")
 
 	// lt = lowerThan, working with BigNumber Type here
-	expect(prevBalance.gt(postBalance)).to.be.true;
+	expect(prevBalance.lt(postBalance)).to.be.true;
+	expect(prevOwnerBalance.lt(postOwnerBalance)).to.be.true;
 	
   });
 });

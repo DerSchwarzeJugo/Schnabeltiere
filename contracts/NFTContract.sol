@@ -40,12 +40,6 @@ contract NFTContract is ERC721Tradable {
         charityReceived[owner] += msg.value;
     }
 
-	// allows withdrawal of the freely sent amounts
-	function withdrawCharity() public payable onlyOwner {
-		require(payable(_msgSender()).send(charityReceived[_msgSender()]));
-        charityReceived[_msgSender()] = 0;
-    } 
-
 	// internal, overriding default function of erc721 contract
 	function _baseURI() internal view virtual override returns (string memory) {
 		return baseURI;
